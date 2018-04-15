@@ -13,5 +13,11 @@
 
 Route::get("/objects", "ObjectsController@all");
 Route::get("/preview/{fileName}", "ObjectsController@getPeview");
+Route::get("/objects/{fileName}", "ObjectsController@getObject");
 Route::post("/objects", "ObjectsController@add");
 Route::delete("/objects/{id}", "ObjectsController@delete");
+
+Route::get("/images", "ImagesController@all");
+Route::get("/image/{fileName}", "ImagesController@getPeview");
+Route::post("/images", "ImagesController@add");
+Route::delete("/images/{id}", "ImagesController@delete");

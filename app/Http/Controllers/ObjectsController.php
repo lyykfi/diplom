@@ -7,12 +7,21 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use App\Objects;
 
+/**
+ * 
+ */
 class ObjectsController extends Controller
 {
+    /**
+     * 
+     */
     public function all() {
         return Objects::all();
     }
 
+    /**
+     * 
+     */
     public function add(Request $request) {
         $params = $request->all();
         
@@ -23,8 +32,9 @@ class ObjectsController extends Controller
         }
         
         if(array_key_exists("object", $params)) {
+            $obj = base64_decode($params["object"]);
             $fileName = 'api/objects/'.uniqid().'.obj';
-            Storage::put($fileName, $params["object"]);
+            Storage::put($fileName, $obj);
 
             $object->object = $fileName;
         }
@@ -47,6 +57,16 @@ class ObjectsController extends Controller
         return response()->file(storage_path('app/api/preview/'.$fileName), ['Content-type' => 'image/png']);
     }
 
+    /**
+     * 
+     */
+    public function getObject($fileName) {
+        return response()->file(storage_path('app/api/objects/'.$fileName));
+    }
+
+    /**
+     * 
+     */
     public function delete($id) {
         return Objects::destroy($id);
     }
