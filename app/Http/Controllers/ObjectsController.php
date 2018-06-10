@@ -39,9 +39,21 @@ class ObjectsController extends Controller
             $object->object = $fileName;
         }
 
+        if(array_key_exists("mtl", $params)) {
+            $obj = base64_decode($params["mtl"]);
+            $mtl_name = $params["mtl_name"];
+            $mtl_name = preg_replace('/[^A-Za-z0-9_\-]/', '_', $mtl_name);
+            $fileName = 'api/mtl/'.$mtl_name;
+
+            //Storage::put($fileName, $obj);
+
+            $object->mtl = $fileName;
+        }
+
         if(array_key_exists("image", $params)) {
             $image = base64_decode($params["image"]);
             $fileName = 'api/preview/'.uniqid().'.png';
+
             Storage::put($fileName, $image);
 
             $object->image = $fileName;
@@ -61,7 +73,16 @@ class ObjectsController extends Controller
      * 
      */
     public function getObject($fileName) {
-        return response()->file(storage_path('app/api/objects/'.$fileName));
+        return response()->file(storage_path('app/api/objects/'.$fileName.'.obj'));
+    }
+
+    /**
+     * 
+     */
+    public function getMTL($fileName) {
+        $fileName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $fileName);
+
+        return response()->file(storage_path('app/api/mtl/'.$fileName.'_mtl'));
     }
 
     /**
